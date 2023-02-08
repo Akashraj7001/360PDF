@@ -139,13 +139,6 @@ export default function Pdf() {
 
   
 
-
-   
-
-
-
-
-
     //pdf generation using dynamic data
     //1st page
    
@@ -230,9 +223,6 @@ export default function Pdf() {
    if(manager>0){
     
 
-
-
-
     doc.addPage();
     doc.setLineWidth(1);
     doc.rect(10, 10, 190, 277);  
@@ -250,72 +240,33 @@ export default function Pdf() {
     let x1 = (doc.internal.pageSize.width / 2) - (tableWidth1 / 2) + 10;
     let y1 = (doc.internal.pageSize.height / 2) - (tableHeight1 / 2) + 10;
    
-                   
-    doc.autoTable({
-      head: [[' ', 'Area of  Developement','Strength','Role Model']],
-      body: m_arr.map((value, index) => {
-        return [      `VALUE0${index + 1}`,      value > 0 && value < 3 ? value : ' ',      value >= 3 && value < 4 ? value : ' ',      value >= 4 && value <=5 ? value : ' '    ];
-      }),
-      startY: y1,
-      styles: {
-        headStyles: {
-          halign: 'center'
-        }
-      }
-    });
+    let combinedBody = [];
+
+for (let i = 0; i < m_arr.length; i++) {
+  combinedBody.push([    `VALUE0${i + 1}`,    m_arr[i] > 0 && m_arr[i] < 3 ? { content: m_arr[i], styles: { fillColor: [255, 0, 0], textColor: [255, 255, 255] } } : ' ',
+    m_arr[i] >= 3 && m_arr[i] < 4 ? { content: m_arr[i], styles: { fillColor: [255, 255, 0], textColor: [0, 0, 0] } } : ' ',
+    m_arr[i] >= 4 && m_arr[i] <= 5 ? { content: m_arr[i], styles: { fillColor: [0, 255, 0], textColor: [255, 255, 255] } } : ' ',
+    s_arr[i] > 0 && s_arr[i] < 3 ? { content: s_arr[i], styles: { fillColor: [255, 0, 0], textColor: [255, 255, 255] } } : ' ',
+    s_arr[i] >= 3 && s_arr[i] < 4 ? { content: s_arr[i], styles: { fillColor: [255, 255, 0], textColor: [0, 0, 0] } } : ' ',
+    s_arr[i] >= 4 && s_arr[i] <= 5 ? { content: s_arr[i], styles: { fillColor: [0, 255, 0], textColor: [255, 255, 255] } } : ' '
+  ]);
+}
+
+doc.autoTable({
+  head: [[' ', 'Area of Development (m_arr)', 'Strength (m_arr)', 'Role Model (m_arr)', 'Area of Development (s_arr)', 'Strength (s_arr)', 'Role Model (s_arr)']],
+  body: combinedBody,
+  startY: y1,
+  styles: {
+    headStyles: {
+      halign: 'center'
+    }
+  }
+});
+
+    
     
     
    }
-   
-
-
-
-
-    // if(manager>0){
-    
-    //   doc.addPage();
-    // doc.setLineWidth(1);
-    // doc.rect(10, 10, 190, 277);  
-    // doc.stroke();
-    // doc.addFileToVFS("Helvetica-BoldOblique.ttf",font)
-
-    // doc.addFont("Helvetica-BoldOblique.ttf", "Helvetica-BoldOblique", "normal");
-    // doc.setFont("Helvetica-BoldOblique");
-    // doc.setFontSize(20);
-    
-    // doc.text("MANAGER",35,45);
-     
-    // let tableWidth1 = 190;
-    // let tableHeight1 = (5 * 20) + 20; // 7 rows * 20px per row + 20px for header
-    // let x1 = (doc.internal.pageSize.width / 2) - (tableWidth1 / 2) + 10;
-    // let y1 = (doc.internal.pageSize.height / 2) - (tableHeight1 / 2) + 10;
-   
-
-      
-    // let head = [[' ', 'Q01', 'Q02', 'Q03']];
-    // let body = [];
-    
-    // for (let i = 0; i < 15; i += 3) {
-    //     let row = ['VALUE' + (i / 3 + 1).toString().padStart(2, '0'),               parseFloat(manager_arr[i] / manager).toFixed(2),
-    //                parseFloat(manager_arr[i + 1] / manager).toFixed(2),
-    //                parseFloat(manager_arr[i + 2] / manager).toFixed(2)];
-    //     body.push(row);
-    // }
-    
-    // doc.autoTable({
-    //     head: head,
-    //     body: body,
-    //     startY: y1,
-    //     styles: {
-    //         headStyles: {
-    //             halign: 'center'
-    //         }
-    //     }
-    // });
-    
-
-
-    // }
     
     
     //5th page slef table
@@ -340,63 +291,28 @@ export default function Pdf() {
       let x2 = (doc.internal.pageSize.width / 2) - (tableWidth2 / 2) + 10;
       let y2 = (doc.internal.pageSize.height / 2) - (tableHeight2 / 2) + 10;
 
-
-
-
-
-
-                         
-    doc.autoTable({
-      head: [[' ', 'Area of  Developement','Strength','Role Model']],
-      body: s_arr.map((value, index) => {
-        return [      `VALUE0${index + 1}`,      value > 0 && value < 3 ? value : ' ',      value >= 3 && value < 4 ? value : ' ',      value >= 4 && value <=5 ? value : ' '    ];
-      }),
-      startY: y2,
-      styles: {
-        headStyles: {
-          halign: 'center'
+      doc.autoTable({
+        head: [[' ', 'Area of Development', 'Strength', 'Role Model']],
+        body: [
+          ...s_arr.map((value, index) => [
+            `VALUE0${index + 1}`,
+            value > 0 && value < 3 ? { content: value, styles: { fillColor: [255, 0, 0], textColor: [255, 255, 255] } } : ' ',
+            value >= 3 && value < 4 ? { content: value, styles: { fillColor: [255, 255, 0], textColor: [0, 0, 0] } } : ' ',
+            value >= 4 && value <= 5 ? { content: value, styles: { fillColor: [0, 255, 0], textColor: [255, 255, 255] } } : ' '
+          ]),
+         
+        ],
+        startY: y2,
+        styles: {
+          headStyles: {
+            halign: 'center'
+          }
         }
-      }
-    });
-
-
-      
-      
-      
-      // let head = [[' ', 'Q01', 'Q02', 'Q03']];
-      // let body = [];
-      
-      // for (let i = 0; i < 15; i += 3) {
-      //     let row = ['VALUE' + (i / 3 + 1).toString().padStart(2, '0'),               parseFloat(self_arr[i] / self).toFixed(2),
-      //                parseFloat(self_arr[i + 1] / self).toFixed(2),
-      //                parseFloat(self_arr[i + 2] / self).toFixed(2)];
-      //     body.push(row);
-      // }
-      
-      // doc.autoTable({
-      //     head: head,
-      //     body: body,
-      //     startY: y2,
-      //     styles: {
-      //         headStyles: {
-      //             halign: 'center'
-      //         }
-      //     }
-      // });
-      
-
+      });
 
     }
 
-   
-
-
-
-
-    
-
-   
-
+  
 
     //6th page team table
 
@@ -420,24 +336,27 @@ export default function Pdf() {
       let y3 = (doc.internal.pageSize.height / 2) - (tableHeight3 / 2) + 10;
   
                          
-    doc.autoTable({
-      head: [[' ', 'Area of  Developement','Strength','Role Model']],
-      body: t_arr.map((value, index) => {
-        return [      `VALUE0${index + 1}`,      value > 0 && value < 3 ? value : ' ',      value >= 3 && value < 4 ? value : ' ',      value >= 4 && value <=5 ? value : ' '    ];
-      }),
-      startY: y3,
-      styles: {
-        headStyles: {
-          halign: 'center'
+      doc.autoTable({
+        head: [[' ', 'Area of Development', 'Strength', 'Role Model']],
+        body: [
+          ...t_arr.map((value, index) => [
+            `VALUE0${index + 1}`,
+            value > 0 && value < 3 ? { content: value, styles: { fillColor: [255, 0, 0], textColor: [255, 255, 255] } } : ' ',
+            value >= 3 && value < 4 ? { content: value, styles: { fillColor: [255, 255, 0], textColor: [0, 0, 0] } } : ' ',
+            value >= 4 && value <= 5 ? { content: value, styles: { fillColor: [0, 255, 0], textColor: [255, 255, 255] } } : ' '
+          ]),
+         
+        ],
+        startY: y3,
+        styles: {
+          headStyles: {
+            halign: 'center'
+          }
         }
-      }
-    });
+      });
       
 
-
     }
-
-
 
 
     //7th page 
@@ -460,12 +379,17 @@ export default function Pdf() {
     let x4 = (doc.internal.pageSize.width / 2) - (tableWidth4 / 2) + 10;
     let y4 = (doc.internal.pageSize.height / 2) - (tableHeight4 / 2) + 10;
     
-                      
     doc.autoTable({
-      head: [[' ', 'Area of  Developement','Strength','Role Model']],
-      body: c_arr.map((value, index) => {
-        return [      `VALUE0${index + 1}`,      value > 0 && value < 3 ? value : ' ',      value >= 3 && value < 4 ? value : ' ',      value >= 4 && value <=5 ? value : ' '    ];
-      }),
+      head: [[' ', 'Area of Development', 'Strength', 'Role Model']],
+      body: [
+        ...c_arr.map((value, index) => [
+          `VALUE0${index + 1}`,
+          value > 0 && value < 3 ? { content: value, styles: { fillColor: [255, 0, 0], textColor: [255, 255, 255] } } : ' ',
+          value >= 3 && value < 4 ? { content: value, styles: { fillColor: [255, 255, 0], textColor: [0, 0, 0] } } : ' ',
+          value >= 4 && value <= 5 ? { content: value, styles: { fillColor: [0, 255, 0], textColor: [255, 255, 255] } } : ' '
+        ]),
+       
+      ],
       startY: y4,
       styles: {
         headStyles: {
@@ -503,7 +427,9 @@ export default function Pdf() {
     doc.autoTable({
       head: [[' ', 'Area of  Developement','Strength','Role Model']],
       body: p_arr.map((value, index) => {
-        return [      `VALUE0${index + 1}`,      value > 0 && value < 3 ? value : ' ',      value >= 3 && value < 4 ? value : ' ',      value >= 4 && value <=5 ? value : ' '    ];
+        return [      `VALUE0${index + 1}`,      value > 0 && value < 3 ? { content: value, styles: {  textColor: [255, 255, 255] } } : ' ',  
+            value >= 3 && value < 4 ? { content: value, styles: { fillColor: [255, 255, 0], textColor: [0, 0, 0] } } : ' ',    
+            value >= 4 && value <=5 ? { content: value, styles: { fillColor: [0, 255, 0], textColor: [255, 255, 255] } }  : ' '    ];
       }),
       startY: y5,
       styles: {
@@ -516,17 +442,6 @@ export default function Pdf() {
 
   }
   
-
-
-
-
-
-
-
-
-
-
-
     doc.save(`${userData[index].empname} Report.pdf`);
   }
 
