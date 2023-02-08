@@ -108,6 +108,40 @@ export default function Pdf() {
       }
     }
 
+  for(let i=0;i<15;i++){
+    manager_arr[i]/=manager;
+    client_arr[i]/=client;
+    self_arr[i]/=self;
+    team_arr[i]/=team;
+    peer_arr[i]/=peer;
+  }
+
+
+    let m_arr=[];
+    let t_arr=[];
+    let s_arr=[];
+    let p_arr=[];
+    let c_arr=[];
+
+
+    for(let i=0;i<15;i+=3){
+      let sum=parseFloat((manager_arr[i]+manager_arr[i+1]+manager_arr[i+2])/3).toFixed(2);
+      let sum1=parseFloat((client_arr[i]+client_arr[i+1]+client_arr[i+2])/3).toFixed(2);
+      let sum2=parseFloat((team_arr[i]+team_arr[i+1]+team_arr[i+2])/3).toFixed(2);
+      let sum3=parseFloat((peer_arr[i]+peer_arr[i+1]+peer_arr[i+2])/3).toFixed(2);
+      let sum4=parseFloat((self_arr[i]+self_arr[i+1]+self_arr[i+2])/3).toFixed(2);
+      m_arr.push(sum);
+      c_arr.push(sum1);
+      t_arr.push(sum2);
+      p_arr.push(sum3);
+      s_arr.push(sum4);
+    }
+
+  
+
+
+   
+
 
 
 
@@ -190,8 +224,15 @@ export default function Pdf() {
     
     doc.text("VALUES",75,85);
 
-    //4th page 
+    //4th page manager table
+
+
+   if(manager>0){
     
+
+
+
+
     doc.addPage();
     doc.setLineWidth(1);
     doc.rect(10, 10, 190, 277);  
@@ -204,20 +245,17 @@ export default function Pdf() {
     
     doc.text("MANAGER",35,45);
      
-    let tableWidth1 = 190;
+    let tableWidth1 = 90;
     let tableHeight1 = (5 * 20) + 20; // 7 rows * 20px per row + 20px for header
     let x1 = (doc.internal.pageSize.width / 2) - (tableWidth1 / 2) + 10;
     let y1 = (doc.internal.pageSize.height / 2) - (tableHeight1 / 2) + 10;
-    
+   
+                   
     doc.autoTable({
-      head: [[' ', 'Q01','Q02','Q03']],
-      body: [
-        ['VALUE01', parseFloat(manager_arr[0]/manager).toFixed(2), parseFloat(manager_arr[1]/manager).toFixed(2), parseFloat(manager_arr[2]/manager).toFixed(2)],
-        ['VALUE02', parseFloat(manager_arr[3]/manager).toFixed(2), parseFloat(manager_arr[4]/manager).toFixed(2), parseFloat(manager_arr[5]/manager).toFixed(2)],
-        ['VALUE03', parseFloat(manager_arr[6]/manager).toFixed(2), parseFloat(manager_arr[7]/manager).toFixed(2), parseFloat(manager_arr[8]/manager).toFixed(2)],
-        ['VALUE04', parseFloat(manager_arr[9]/manager).toFixed(2), parseFloat(manager_arr[10]/manager).toFixed(2), parseFloat(manager_arr[11]/manager).toFixed(2)],
-        ['VALUE05', parseFloat(manager_arr[12]/manager).toFixed(2), parseFloat(manager_arr[13]/manager).toFixed(2), parseFloat(manager_arr[14]/manager).toFixed(2)]
-      ],
+      head: [[' ', 'Area of  Developement','Strength','Role Model']],
+      body: m_arr.map((value, index) => {
+        return [      `VALUE0${index + 1}`,      value > 0 && value < 3 ? value : ' ',      value >= 3 && value < 4 ? value : ' ',      value >= 4 && value <=5 ? value : ' '    ];
+      }),
       startY: y1,
       styles: {
         headStyles: {
@@ -225,36 +263,94 @@ export default function Pdf() {
         }
       }
     });
+    
+    
+   }
    
 
-    //5th page 
 
-    doc.addPage();
-    doc.setLineWidth(1);
-    doc.rect(10, 10, 190, 277);  
-    doc.stroke();
-    doc.addFileToVFS("Helvetica-BoldOblique.ttf",font)
 
-    doc.addFont("Helvetica-BoldOblique.ttf", "Helvetica-BoldOblique", "normal");
-    doc.setFont("Helvetica-BoldOblique");
-    doc.setFontSize(20);
+
+    // if(manager>0){
     
-    doc.text("SELF",35,45);
+    //   doc.addPage();
+    // doc.setLineWidth(1);
+    // doc.rect(10, 10, 190, 277);  
+    // doc.stroke();
+    // doc.addFileToVFS("Helvetica-BoldOblique.ttf",font)
+
+    // doc.addFont("Helvetica-BoldOblique.ttf", "Helvetica-BoldOblique", "normal");
+    // doc.setFont("Helvetica-BoldOblique");
+    // doc.setFontSize(20);
+    
+    // doc.text("MANAGER",35,45);
      
-    let tableWidth2 = 190;
-    let tableHeight2 = (5 * 20) + 20; // 7 rows * 20px per row + 20px for header
-    let x2 = (doc.internal.pageSize.width / 2) - (tableWidth2 / 2) + 10;
-    let y2 = (doc.internal.pageSize.height / 2) - (tableHeight2 / 2) + 10;
+    // let tableWidth1 = 190;
+    // let tableHeight1 = (5 * 20) + 20; // 7 rows * 20px per row + 20px for header
+    // let x1 = (doc.internal.pageSize.width / 2) - (tableWidth1 / 2) + 10;
+    // let y1 = (doc.internal.pageSize.height / 2) - (tableHeight1 / 2) + 10;
+   
+
+      
+    // let head = [[' ', 'Q01', 'Q02', 'Q03']];
+    // let body = [];
     
+    // for (let i = 0; i < 15; i += 3) {
+    //     let row = ['VALUE' + (i / 3 + 1).toString().padStart(2, '0'),               parseFloat(manager_arr[i] / manager).toFixed(2),
+    //                parseFloat(manager_arr[i + 1] / manager).toFixed(2),
+    //                parseFloat(manager_arr[i + 2] / manager).toFixed(2)];
+    //     body.push(row);
+    // }
+    
+    // doc.autoTable({
+    //     head: head,
+    //     body: body,
+    //     startY: y1,
+    //     styles: {
+    //         headStyles: {
+    //             halign: 'center'
+    //         }
+    //     }
+    // });
+    
+
+
+    // }
+    
+    
+    //5th page slef table
+
+    if(self>0){
+
+
+      doc.addPage();
+      doc.setLineWidth(1);
+      doc.rect(10, 10, 190, 277);  
+      doc.stroke();
+      doc.addFileToVFS("Helvetica-BoldOblique.ttf",font)
+  
+      doc.addFont("Helvetica-BoldOblique.ttf", "Helvetica-BoldOblique", "normal");
+      doc.setFont("Helvetica-BoldOblique");
+      doc.setFontSize(20);
+      
+      doc.text("SELF",35,45);
+       
+      let tableWidth2 = 190;
+      let tableHeight2 = (5 * 20) + 20; // 7 rows * 20px per row + 20px for header
+      let x2 = (doc.internal.pageSize.width / 2) - (tableWidth2 / 2) + 10;
+      let y2 = (doc.internal.pageSize.height / 2) - (tableHeight2 / 2) + 10;
+
+
+
+
+
+
+                         
     doc.autoTable({
-      head: [[' ', 'Q01','Q02','Q03']],
-      body: [
-        ['VALUE01', parseFloat(self_arr[0]/self).toFixed(2), parseFloat(self_arr[1]/self).toFixed(2), parseFloat(self_arr[2]/self).toFixed(2)],
-        ['VALUE02', parseFloat(self_arr[3]/self).toFixed(2), parseFloat(self_arr[4]/self).toFixed(2), parseFloat(self_arr[5]/self).toFixed(2)],
-        ['VALUE03', parseFloat(self_arr[6]/self).toFixed(2), parseFloat(self_arr[7]/self).toFixed(2), parseFloat(self_arr[8]/self).toFixed(2)],
-        ['VALUE04', parseFloat(self_arr[9]/self).toFixed(2), parseFloat(self_arr[10]/self).toFixed(2), parseFloat(self_arr[11]/self).toFixed(2)],
-        ['VALUE05', parseFloat(self_arr[12]/self).toFixed(2), parseFloat(self_arr[13]/self).toFixed(2), parseFloat(self_arr[14]/self).toFixed(2)]
-      ],
+      head: [[' ', 'Area of  Developement','Strength','Role Model']],
+      body: s_arr.map((value, index) => {
+        return [      `VALUE0${index + 1}`,      value > 0 && value < 3 ? value : ' ',      value >= 3 && value < 4 ? value : ' ',      value >= 4 && value <=5 ? value : ' '    ];
+      }),
       startY: y2,
       styles: {
         headStyles: {
@@ -264,35 +360,71 @@ export default function Pdf() {
     });
 
 
-    //6th page 
+      
+      
+      
+      // let head = [[' ', 'Q01', 'Q02', 'Q03']];
+      // let body = [];
+      
+      // for (let i = 0; i < 15; i += 3) {
+      //     let row = ['VALUE' + (i / 3 + 1).toString().padStart(2, '0'),               parseFloat(self_arr[i] / self).toFixed(2),
+      //                parseFloat(self_arr[i + 1] / self).toFixed(2),
+      //                parseFloat(self_arr[i + 2] / self).toFixed(2)];
+      //     body.push(row);
+      // }
+      
+      // doc.autoTable({
+      //     head: head,
+      //     body: body,
+      //     startY: y2,
+      //     styles: {
+      //         headStyles: {
+      //             halign: 'center'
+      //         }
+      //     }
+      // });
+      
 
 
-    doc.addPage();
-    doc.setLineWidth(1);
-    doc.rect(10, 10, 190, 277);  
-    doc.stroke();
-    doc.addFileToVFS("Helvetica-BoldOblique.ttf",font)
+    }
 
-    doc.addFont("Helvetica-BoldOblique.ttf", "Helvetica-BoldOblique", "normal");
-    doc.setFont("Helvetica-BoldOblique");
-    doc.setFontSize(20);
+   
+
+
+
+
     
-    doc.text("TEAM",35,45);
-     
-    let tableWidth3 = 190;
-    let tableHeight3 = (5 * 20) + 20; // 7 rows * 20px per row + 20px for header
-    let x3 = (doc.internal.pageSize.width / 2) - (tableWidth3 / 2) + 10;
-    let y3 = (doc.internal.pageSize.height / 2) - (tableHeight3 / 2) + 10;
-    
+
+   
+
+
+    //6th page team table
+
+    if(team>0){
+
+      doc.addPage();
+      doc.setLineWidth(1);
+      doc.rect(10, 10, 190, 277);  
+      doc.stroke();
+      doc.addFileToVFS("Helvetica-BoldOblique.ttf",font)
+  
+      doc.addFont("Helvetica-BoldOblique.ttf", "Helvetica-BoldOblique", "normal");
+      doc.setFont("Helvetica-BoldOblique");
+      doc.setFontSize(20);
+      
+      doc.text("TEAM",35,45);
+       
+      let tableWidth3 = 190;
+      let tableHeight3 = (5 * 20) + 20; // 7 rows * 20px per row + 20px for header
+      let x3 = (doc.internal.pageSize.width / 2) - (tableWidth3 / 2) + 10;
+      let y3 = (doc.internal.pageSize.height / 2) - (tableHeight3 / 2) + 10;
+  
+                         
     doc.autoTable({
-      head: [[' ', 'Q01','Q02','Q03']],
-      body: [
-        ['VALUE01', parseFloat(team_arr[0]/team).toFixed(2), parseFloat(team_arr[1]/team).toFixed(2), parseFloat(team_arr[2]/team).toFixed(2)],
-        ['VALUE02', parseFloat(team_arr[3]/team).toFixed(2), parseFloat(team_arr[4]/team).toFixed(2), parseFloat(team_arr[5]/team).toFixed(2)],
-        ['VALUE03', parseFloat(team_arr[6]/team).toFixed(2), parseFloat(team_arr[7]/team).toFixed(2), parseFloat(team_arr[8]/team).toFixed(2)],
-        ['VALUE04', parseFloat(team_arr[9]/team).toFixed(2), parseFloat(team_arr[10]/team).toFixed(2), parseFloat(team_arr[11]/team).toFixed(2)],
-        ['VALUE05', parseFloat(team_arr[12]/team).toFixed(2), parseFloat(team_arr[13]/team).toFixed(2), parseFloat(team_arr[14]/team).toFixed(2)]
-      ],
+      head: [[' ', 'Area of  Developement','Strength','Role Model']],
+      body: t_arr.map((value, index) => {
+        return [      `VALUE0${index + 1}`,      value > 0 && value < 3 ? value : ' ',      value >= 3 && value < 4 ? value : ' ',      value >= 4 && value <=5 ? value : ' '    ];
+      }),
       startY: y3,
       styles: {
         headStyles: {
@@ -300,6 +432,11 @@ export default function Pdf() {
         }
       }
     });
+      
+
+
+    }
+
 
 
 
@@ -323,15 +460,12 @@ export default function Pdf() {
     let x4 = (doc.internal.pageSize.width / 2) - (tableWidth4 / 2) + 10;
     let y4 = (doc.internal.pageSize.height / 2) - (tableHeight4 / 2) + 10;
     
+                      
     doc.autoTable({
-      head: [[' ', 'Q01','Q02','Q03']],
-      body: [
-        ['VALUE01', parseFloat(client_arr[0]/client).toFixed(2), parseFloat(client_arr[1]/client).toFixed(2), parseFloat(client_arr[2]/client).toFixed(2)],
-        ['VALUE02', parseFloat(client_arr[3]/client).toFixed(2), parseFloat(client_arr[4]/client).toFixed(2), parseFloat(client_arr[5]/client).toFixed(2)],
-        ['VALUE03', parseFloat(client_arr[6]/client).toFixed(2), parseFloat(client_arr[7]/client).toFixed(2), parseFloat(client_arr[8]/client).toFixed(2)],
-        ['VALUE04', parseFloat(client_arr[9]/client).toFixed(2), parseFloat(client_arr[10]/client).toFixed(2), parseFloat(client_arr[11]/client).toFixed(2)],
-        ['VALUE05', parseFloat(client_arr[12]/client).toFixed(2), parseFloat(client_arr[13]/client).toFixed(2), parseFloat(client_arr[14]/client).toFixed(2)]
-      ],
+      head: [[' ', 'Area of  Developement','Strength','Role Model']],
+      body: c_arr.map((value, index) => {
+        return [      `VALUE0${index + 1}`,      value > 0 && value < 3 ? value : ' ',      value >= 3 && value < 4 ? value : ' ',      value >= 4 && value <=5 ? value : ' '    ];
+      }),
       startY: y4,
       styles: {
         headStyles: {
@@ -339,44 +473,49 @@ export default function Pdf() {
         }
       }
     });
-
+    
    
 
   //8th page
-  
-  doc.addPage();
-  doc.setLineWidth(1);
-  doc.rect(10, 10, 190, 277);  
-  doc.stroke();
-  doc.addFileToVFS("Helvetica-BoldOblique.ttf",font)
 
-  doc.addFont("Helvetica-BoldOblique.ttf", "Helvetica-BoldOblique", "normal");
-  doc.setFont("Helvetica-BoldOblique");
-  doc.setFontSize(20);
+
+  if(peer>0){
+
+
+    doc.addPage();
+    doc.setLineWidth(1);
+    doc.rect(10, 10, 190, 277);  
+    doc.stroke();
+    doc.addFileToVFS("Helvetica-BoldOblique.ttf",font)
   
-  doc.text("PEER",35,45);
-   
-  let tableWidth5 = 190;
-  let tableHeight5 = (5 * 20) + 20; // 7 rows * 20px per row + 20px for header
-  let x5 = (doc.internal.pageSize.width / 2) - (tableWidth5 / 2) + 10;
-  let y5 = (doc.internal.pageSize.height / 2) - (tableHeight5 / 2) + 10;
-  
-  doc.autoTable({
-    head: [[' ', 'Q01','Q02','Q03']],
-    body: [
-      ['VALUE01', parseFloat(peer_arr[0]/peer).toFixed(2), parseFloat(peer_arr[1]/peer).toFixed(2), parseFloat(peer_arr[2]/peer).toFixed(2)],
-      ['VALUE02', parseFloat(peer_arr[3]/peer).toFixed(2), parseFloat(peer_arr[4]/peer).toFixed(2), parseFloat(peer_arr[5]/peer).toFixed(2)],
-      ['VALUE03', parseFloat(peer_arr[6]/peer).toFixed(2), parseFloat(peer_arr[7]/peer).toFixed(2), parseFloat(peer_arr[8]/peer).toFixed(2)],
-      ['VALUE04', parseFloat(peer_arr[9]/peer).toFixed(2), parseFloat(peer_arr[10]/peer).toFixed(2), parseFloat(peer_arr[11]/peer).toFixed(2)],
-      ['VALUE05', parseFloat(peer_arr[12]/peer).toFixed(2), parseFloat(peer_arr[13]/peer).toFixed(2), parseFloat(peer_arr[14]/peer).toFixed(2)]
-    ],
-    startY: y5,
-    styles: {
-      headStyles: {
-        halign: 'center'
+    doc.addFont("Helvetica-BoldOblique.ttf", "Helvetica-BoldOblique", "normal");
+    doc.setFont("Helvetica-BoldOblique");
+    doc.setFontSize(20);
+    
+    doc.text("PEER",35,45);
+     
+    let tableWidth5 = 190;
+    let tableHeight5 = (5 * 20) + 20; // 7 rows * 20px per row + 20px for header
+    let x5 = (doc.internal.pageSize.width / 2) - (tableWidth5 / 2) + 10;
+    let y5 = (doc.internal.pageSize.height / 2) - (tableHeight5 / 2) + 10;
+    
+                     
+    doc.autoTable({
+      head: [[' ', 'Area of  Developement','Strength','Role Model']],
+      body: p_arr.map((value, index) => {
+        return [      `VALUE0${index + 1}`,      value > 0 && value < 3 ? value : ' ',      value >= 3 && value < 4 ? value : ' ',      value >= 4 && value <=5 ? value : ' '    ];
+      }),
+      startY: y5,
+      styles: {
+        headStyles: {
+          halign: 'center'
+        }
       }
-    }
-  }); 
+    });
+    
+
+  }
+  
 
 
 
